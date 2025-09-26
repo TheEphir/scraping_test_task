@@ -8,26 +8,13 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
+from xpath import get_brain_com_ua_xpath
 
 START_URL = "https://brain.com.ua/"
 SEARCH_ITEM = "Apple iPhone 15 128GB Black"
 PATH_TO_WEBDRIVER = "./chromedriver.exe"
 
-ITEM_SPECS_XPATH = {
-    "full_name":'//div[@class="title"]/h1',
-    "color":'//a[contains(@title, "Колір")]',
-    "storage":'//a[contains(@title, "Вбудована пам")]',
-    "seller":'//div[@class="logo"]/a',
-    "price":'//div[@class="br-pr-np"]/div/span',
-    "discount_price":'//span[@class="red-price"]',
-    "photos":'//div[contains(@class, "slick-slide slick")]/img',
-    "item_id":'//div[@class="container br-container-main br-container-prt"][contains(data-code,"")]',
-    "review_count":'//div[@class="br-pt-rt-main-mark"]//a[@href="#reviews-list"]/span',
-    "series":'//div[@class="container br-container-main br-container-prt"][contains(data-model,"")]',
-    "screen":'//a[contains(@title, "Діагональ")]',
-    "resolution":'//a[contains(@title, "Роздільна здатність екрану")]',
-    "all_specs":'//div[@class="br-pr-chr-item"]/div/div',
-}
+ITEM_SPECS_XPATH = get_brain_com_ua_xpath()
 
 
 def get_item_info():
@@ -133,17 +120,20 @@ def get_item_info():
         resolution = None
 
     all_specs = {}
+    # this won't work proper idk why, path working ok, but still get empty keys and values...
     try:
-        all_specs_elems = driver.find_element(By.XPATH, ITEM_SPECS_XPATH["all_specs"])
-        print(len(all_specs))
-        for div in all_specs_elems:
-            spans = div.find_elements(By.TAG_NAME, "span")
-            key = spans[0].text
-            val = spans[1].text
-            
-            all_specs.update({key:val})
+        specs_chapters = driver.find_elements(By.XPATH, '//div[@class="br-pr-chr-item"]')
+        for chapter in specs_chapters:
+            rows = chapter.find_elements(By.TAG_NAME, "div")
+            for row in rows:
+                spans = row.find_elements(By.TAG_NAME, "span")
+                key = spans[0].text
+                val = spans[1].text
+                all_specs.update({key:val})
     except:
         all_specs = None
+    
+    driver.quit()
     
     item_info = {
         "full_name":full_name,
@@ -162,6 +152,3 @@ def get_item_info():
     }
     
     return item_info
-
-
-get_item_info()
