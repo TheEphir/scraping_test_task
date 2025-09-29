@@ -2,7 +2,7 @@ import time
 import re
 from playwright.sync_api import sync_playwright
 
-from xpath import get_brain_com_ua_xpath
+from files.xpath import get_brain_com_ua_xpath
 
 START_URL = "https://brain.com.ua/"
 SEARCH_ITEM = "Apple iPhone 15 128GB Black"
@@ -12,7 +12,7 @@ TIMEOUT = 1000 # 1sec
 
 def get_item_info():
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
+        browser = p.chromium.launch()
         page = browser.new_page()
         page.screenshot()
         page.goto(START_URL)

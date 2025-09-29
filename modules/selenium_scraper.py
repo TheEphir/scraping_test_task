@@ -1,5 +1,11 @@
-# TODO Характеристики товара. Все характеристики на вкладке. Характеристики собрать как словарь
+"""
+Collect data about Iphone from brain.com.ua 
+"""
 
+# from load_django import *
+# from ..brain_selenium_project.parser_app.models import *
+
+import os
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.service import Service
@@ -8,7 +14,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-from xpath import get_brain_com_ua_xpath
+from files.xpath import get_brain_com_ua_xpath
 
 START_URL = "https://brain.com.ua/"
 SEARCH_ITEM = "Apple iPhone 15 128GB Black"
@@ -17,9 +23,10 @@ PATH_TO_WEBDRIVER = "./chromedriver.exe"
 ITEM_SPECS_XPATH = get_brain_com_ua_xpath()
 
 
-def get_item_info():
-
-    service = Service(executable_path=PATH_TO_WEBDRIVER)
+def get_item_info(driver_path:str) -> dict[str:any]:
+    """should make it with json format"""
+    
+    service = Service(executable_path=driver_path)
     driver = webdriver.Chrome(service=service)
 
     try:
@@ -152,3 +159,7 @@ def get_item_info():
     }
     
     return item_info
+
+
+def get_driver_path():
+    return os.getcwd()+'/chromedriver.exe'
