@@ -1,12 +1,31 @@
+"""playwright parser that looking for iPhone on brain.com.ua"""
+
 import time
 import re
 from playwright.sync_api import sync_playwright
 
-from files.xpath import get_brain_com_ua_xpath
+
+from load_django import *
+from parser_app.models import BrainItem
+
 
 START_URL = "https://brain.com.ua/"
 SEARCH_ITEM = "Apple iPhone 15 128GB Black"
-ITEM_SPECS_XPATH = get_brain_com_ua_xpath()
+ITEM_SPECS_XPATH = {
+    "full_name":'//div[@class="title"]/h1',
+    "color":'//a[contains(@title, "Колір")]',
+    "storage":'//a[contains(@title, "Вбудована пам")]',
+    "seller":'//div[@class="logo"]/a',
+    "price":'//div[@class="br-pr-np"]/div/span',
+    "discount_price":'//span[@class="red-price"]',
+    "photos":'//div[contains(@class, "slick-slide slick")]/img',
+    "item_id":'//div[@class="container br-container-main br-container-prt"][contains(data-code,"")]',
+    "review_count":'//div[@class="br-pt-rt-main-mark"]//a[@href="#reviews-list"]/span',
+    "series":'//div[@class="container br-container-main br-container-prt"][contains(data-model,"")]',
+    "screen":'//a[contains(@title, "Діагональ")]',
+    "resolution":'//a[contains(@title, "Роздільна здатність екрану")]',
+    "all_specs":'//div[@class="br-pr-chr-item"]/div/div',
+}
 TIMEOUT = 1000 # 1sec
 
 
@@ -14,7 +33,6 @@ def get_item_info():
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page()
-        page.screenshot()
         page.goto(START_URL)
         
         time.sleep(1)
@@ -127,10 +145,9 @@ def get_item_info():
         }
         
         return item_info
+    
 
 
-# get_item_info()
-
-res = get_item_info()
-for key in res:
-    print(f"{key}: {res[key]}")
+data = get_item_info()
+print(data)
+BrainItem.objects.create(**data)

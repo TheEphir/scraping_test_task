@@ -2,8 +2,8 @@
 Collect data about Iphone from brain.com.ua 
 """
 
-# from load_django import *
-# from ..brain_selenium_project.parser_app.models import *
+from load_django import *
+from parser_app.models import BrainItem
 
 import os
 from selenium import webdriver
@@ -14,13 +14,24 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-from files.xpath import get_brain_com_ua_xpath
-
 START_URL = "https://brain.com.ua/"
 SEARCH_ITEM = "Apple iPhone 15 128GB Black"
-PATH_TO_WEBDRIVER = "./chromedriver.exe"
 
-ITEM_SPECS_XPATH = get_brain_com_ua_xpath()
+ITEM_SPECS_XPATH = {
+    "full_name":'//div[@class="title"]/h1',
+    "color":'//a[contains(@title, "Колір")]',
+    "storage":'//a[contains(@title, "Вбудована пам")]',
+    "seller":'//div[@class="logo"]/a',
+    "price":'//div[@class="br-pr-np"]/div/span',
+    "discount_price":'//span[@class="red-price"]',
+    "photos":'//div[contains(@class, "slick-slide slick")]/img',
+    "item_id":'//div[@class="container br-container-main br-container-prt"][contains(data-code,"")]',
+    "review_count":'//div[@class="br-pt-rt-main-mark"]//a[@href="#reviews-list"]/span',
+    "series":'//div[@class="container br-container-main br-container-prt"][contains(data-model,"")]',
+    "screen":'//a[contains(@title, "Діагональ")]',
+    "resolution":'//a[contains(@title, "Роздільна здатність екрану")]',
+    "all_specs":'//div[@class="br-pr-chr-item"]/div/div',
+}
 
 
 def get_item_info(driver_path:str) -> dict[str:any]:
@@ -163,3 +174,8 @@ def get_item_info(driver_path:str) -> dict[str:any]:
 
 def get_driver_path():
     return os.getcwd()+'/chromedriver.exe'
+
+
+data = get_item_info(get_driver_path())
+print(data)
+BrainItem.objects.create(**data)

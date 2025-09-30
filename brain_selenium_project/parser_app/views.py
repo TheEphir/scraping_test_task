@@ -5,9 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from parser_app.models import BrainItem
 
 
-# from ...modules.selenium import selenium_scraper
-# Create your views here.
-@csrf_exempt
+@csrf_exempt # remove csrf token requirement
 def item_create(request):
     if request.method == "POST":
         try:
