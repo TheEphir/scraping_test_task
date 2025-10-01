@@ -1,6 +1,4 @@
 # scraping_test_task
-There is no need to make request/bs4 because "brain.com.ua" is js loaded site
-
 ## django API Setup
 making venv:
 ```shell
