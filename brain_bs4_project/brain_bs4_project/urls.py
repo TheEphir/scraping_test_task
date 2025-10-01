@@ -1,5 +1,5 @@
 """
-URL configuration for brain_playwright_project project.
+URL configuration for brain_bs4_project project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.2/topics/http/urls/
@@ -17,7 +17,7 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
-from parser_app.views import item_list, item_create
+from parser_app.views import item_create, item_list
 
 urlpatterns = [
     path("admin/", admin.site.urls),

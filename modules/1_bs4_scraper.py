@@ -1,25 +1,11 @@
+from load_django_bs4 import *
+from parser_app.models import BrainItem
+
 import re
-from typing import reveal_type
-import attr
 import requests
 from bs4 import BeautifulSoup
 
 URL = "https://brain.com.ua/ukr/Mobilniy_telefon_Apple_iPhone_16_Pro_Max_256GB_Black_Titanium-p1145443.html"
-ITEM_SPECS_XPATH = {
-    "full_name":'//div[@class="title"]/h1',
-    "color":'//a[contains(@title, "Колір")]',
-    "storage":'//a[contains(@title, "Вбудована пам")]',
-    "seller":'//div[@class="logo"]/a',
-    "price":'//div[@class="br-pr-np"]/div/span',
-    "discount_price":'//span[@class="red-price"]',
-    "photos":'//div[contains(@class, "slick-slide slick")]/img',
-    "item_id":'//div[@class="container br-container-main br-container-prt"][contains(data-code,"")]',
-    "review_count":'//div[@class="br-pt-rt-main-mark"]//a[@href="#reviews-list"]/span',
-    "series":'//div[@class="container br-container-main br-container-prt"][contains(data-model,"")]',
-    "screen":'//a[contains(@title, "Діагональ")]',
-    "resolution":'//a[contains(@title, "Роздільна здатність екрану")]',
-    "all_specs":'//div[@class="br-pr-chr-item"]/div/div',
-}
 
 responce = requests.get(URL).text
 soup = BeautifulSoup(responce, features="html.parser")
@@ -119,5 +105,6 @@ item_info = {
         "all_specs":all_specs,
 }
 
-for key in item_info:
-    print(f"{key}: {item_info[key]}")
+BrainItem.objects.create(**item_info)
+
+print(item_info)

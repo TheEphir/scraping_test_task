@@ -15,7 +15,6 @@ Activating venv:
 Then installing Django and restframework:
 ```shell
 pip install django
-pip install django djangorestframework
 pip install psycopg2-binary
 ```
 

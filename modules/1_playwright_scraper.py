@@ -122,7 +122,7 @@ def get_item_info():
             for row in rows:
                 spans = row.locator("//span").all()
                 key = spans[0].text_content().strip()
-                val = re.sub(r"[^\w\s]", "", spans[1].text_content().strip().replace(u"\xa0", u"").replace(u"\n", u"")) # clear non-writable characters
+                val = " ".join(spans[1].text_content().split())
                 all_specs.update({key:val})
         except:
             all_specs = None
