@@ -42,3 +42,10 @@ DATABASES = {
 }
 ```
 
+In your app make `model` -> then made it `view` -> then urls
+
+Make migrations
+```shell
+python manage.py makemigrations
+python manage.py migrate
+```

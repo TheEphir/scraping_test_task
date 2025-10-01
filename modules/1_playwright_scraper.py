@@ -5,7 +5,7 @@ import re
 from playwright.sync_api import sync_playwright
 
 
-from load_django import *
+from load_django_playrwithg import *
 from parser_app.models import BrainItem
 
 

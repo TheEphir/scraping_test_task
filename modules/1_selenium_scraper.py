@@ -2,7 +2,7 @@
 Collect data about Iphone from brain.com.ua 
 """
 
-from load_django import *
+from modules.load_django_selenium import *
 from parser_app.models import BrainItem
 
 import os
